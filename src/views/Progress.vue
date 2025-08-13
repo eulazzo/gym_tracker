@@ -354,8 +354,8 @@ const currentWeight = computed(() => {
 
 const weightTrend = computed(() => {
   const sorted = workoutStore.bodyMetrics
-    .filter(m => m.weight)
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .filter((m: any) => m.weight)
+    .sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime())
   
   if (sorted.length < 2) return 0
   return sorted[0].weight! - sorted[1].weight!
@@ -385,14 +385,14 @@ const weightData = computed(() => {
   const cutoff = subMonths(new Date(), months)
   
   return workoutStore.bodyMetrics
-    .filter(m => m.weight && new Date(m.date) >= cutoff)
-    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+    .filter((m: any) => m.weight && new Date(m.date) >= cutoff)
+    .sort((a: any, b: any) => new Date(a.date).getTime() - new Date(b.date).getTime())
 })
 
 const sortedBodyMetrics = computed(() => {
   return workoutStore.bodyMetrics
     .slice()
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime())
     .slice(0, 10) // Show last 10 entries
 })
 
@@ -426,67 +426,68 @@ const saveMetrics = () => {
   showMetricsModal.value = false
 }
 
-const getWorkoutStats = () => {
-  return (workoutStore.workouts as any[]).filter((w: any) => {
-    const workoutDate = new Date(w.date)
-    const cutoff = new Date()
-    cutoff.setDate(cutoff.getDate() - 30)
-    return workoutDate >= cutoff
-  })
-}
+// Funções comentadas por não estarem sendo utilizadas atualmente
+// const getWorkoutStats = () => {
+//   return (workoutStore.workouts as any[]).filter((w: any) => {
+//     const workoutDate = new Date(w.date)
+//     const cutoff = new Date()
+//     cutoff.setDate(cutoff.getDate() - 30)
+//     return workoutDate >= cutoff
+//   })
+// }
 
-const getWeightData = () => {
-  const sorted = (workoutStore.bodyMetrics as any[])
-    .filter((m: any) => m.weight)
-    .sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime())
+// const getWeightData = () => {
+//   const sorted = (workoutStore.bodyMetrics as any[])
+//     .filter((m: any) => m.weight)
+//     .sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime())
   
-  return sorted.slice(0, 10).reverse()
-}
+//   return sorted.slice(0, 10).reverse()
+// }
 
-const getWeeklyWorkouts = () => {
-  const recent = (workoutStore.workouts as any[]).slice(-28) // Last 4 weeks
-  const weekly = new Array(4).fill(0)
+// const getWeeklyWorkouts = () => {
+//   const recent = (workoutStore.workouts as any[]).slice(-28) // Last 4 weeks
+//   const weekly = new Array(4).fill(0)
   
-  recent.forEach((workout: any) => {
-    const weekIndex = Math.floor((Date.now() - new Date(workout.date).getTime()) / (7 * 24 * 60 * 60 * 1000))
-    if (weekIndex < 4) {
-      weekly[weekIndex]++
-    }
-  })
+//   recent.forEach((workout: any) => {
+//     const weekIndex = Math.floor((Date.now() - new Date(workout.date).getTime()) / (7 * 24 * 60 * 60 * 1000))
+//     if (weekIndex < 4) {
+//       weekly[weekIndex]++
+//     }
+//   })
   
-  return weekly.reverse()
-}
+//   return weekly.reverse()
+// }
 
-const getExerciseProgress = () => {
-  const exerciseStats: { [key: string]: { total: number; maxWeight: number } } = {}
+// const getExerciseProgress = () => {
+//   const exerciseStats: { [key: string]: { total: number; maxWeight: number } } = {}
   
-  ;(workoutStore.workouts as any[]).forEach((workout: any) => {
-    workout.exercises.forEach((exercise: any) => {
-      exercise.sets.forEach((set: any) => {
-        if (!exerciseStats[exercise.exerciseId]) {
-          exerciseStats[exercise.exerciseId] = { total: 0, maxWeight: 0 }
-        }
-        exerciseStats[exercise.exerciseId].total += set.reps
-        exerciseStats[exercise.exerciseId].maxWeight = Math.max(exerciseStats[exercise.exerciseId].maxWeight, set.weight)
-      })
-    })
-  })
+//   ;(workoutStore.workouts as any[]).forEach((workout: any) => {
+//     workout.exercises.forEach((exercise: any) => {
+//       exercise.sets.forEach((set: any) => {
+//         if (!exerciseStats[exercise.exerciseId]) {
+//           exerciseStats[exercise.exerciseId] = { total: 0, maxWeight: 0 }
+//         }
+//         exerciseStats[exercise.exerciseId].total += set.reps
+//         exerciseStats[exercise.exerciseId].maxWeight = Math.max(exerciseStats[exercise.exerciseId].maxWeight, set.weight)
+//       })
+//     })
+//   })
   
-  return exerciseStats
-}
+//   return exerciseStats
+// }
 
-const getWeightProgress = () => {
-  const cutoff = new Date()
-  cutoff.setMonth(cutoff.getMonth() - 3)
+// const getWeightProgress = () => {
+//   const cutoff = new Date()
+//   cutoff.setMonth(cutoff.getMonth() - 3)
   
-  return (workoutStore.bodyMetrics as any[])
-    .filter((m: any) => m.weight && new Date(m.date) >= cutoff)
-    .sort((a: any, b: any) => new Date(a.date).getTime() - new Date(b.date).getTime())
-}
+//   return (workoutStore.bodyMetrics as any[])
+//     .filter((m: any) => m.weight && new Date(m.date) >= cutoff)
+//     .sort((a: any, b: any) => new Date(a.date).getTime() - new Date(b.date).getTime())
+// }
 
-const getBodyFatProgress = () => {
-  return (workoutStore.bodyMetrics as any[])
-    .filter((m: any) => m.bodyFat)
-    .sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime())
-}
+// const getBodyFatProgress = () => {
+//   return (workoutStore.bodyMetrics as any[])
+//     .filter((m: any) => m.bodyFat)
+//     .sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime())
+// }
 </script>

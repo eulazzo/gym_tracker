@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
+import { ref, computed, type Ref } from 'vue'
 
 export interface User {
   id: string
@@ -152,6 +152,6 @@ export const useAuthStore = defineStore('auth', () => {
 })
 
 // Make readonly to prevent external mutations
-function readonly<T>(ref: any): T {
+function readonly<T>(ref: Ref<T>): Ref<T> {
   return ref
 }

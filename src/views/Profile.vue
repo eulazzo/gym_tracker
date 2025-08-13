@@ -339,7 +339,6 @@ import { useAuthStore } from '../stores/auth'
 import { useWorkoutStore } from '../stores/workout'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
-import type { User } from '../stores/auth'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -405,14 +404,16 @@ const cancelEditGoals = () => {
 }
 
 const savePreferences = () => {
-  authStore.updateProfile({
-    preferences: {
-      ...authStore.user!.preferences,
-      weekStartsOn: preferencesForm.weekStartsOn,
-      defaultRestTime: preferencesForm.defaultRestTime,
-      units: preferencesForm.units
-    }
-  })
+  if (authStore.user) {
+    authStore.updateProfile({
+      preferences: {
+        ...authStore.user.preferences,
+        weekStartsOn: preferencesForm.weekStartsOn,
+        defaultRestTime: preferencesForm.defaultRestTime,
+        units: preferencesForm.units
+      }
+    })
+  }
   editingPreferences.value = false
 }
 

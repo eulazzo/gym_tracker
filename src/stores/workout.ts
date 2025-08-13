@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
+import { ref, computed, Ref } from 'vue'
 import { isToday, startOfWeek, endOfWeek } from 'date-fns'
 
 export interface Exercise {
@@ -374,6 +374,6 @@ export const useWorkoutStore = defineStore('workout', () => {
 })
 
 // Make readonly to prevent external mutations
-function readonly<T>(ref: any): T {
+function readonly<T>(ref: Ref<T>): Ref<T> {
   return ref
 }

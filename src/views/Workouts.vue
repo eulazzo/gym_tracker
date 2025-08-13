@@ -289,11 +289,12 @@ const averageDuration = computed(() => {
   return Math.round(total / workoutStore.workouts.length)
 })
 
-const totalWorkoutTime = computed(() => {
-  if ((workoutStore.workouts as any[]).length === 0) return 0
-  const total = (workoutStore.workouts as any[]).reduce((sum: number, workout: any) => sum + workout.duration, 0)
-  return Math.round(total / (workoutStore.workouts as any[]).length)
-})
+// Função comentada por não estar sendo utilizada atualmente
+// const totalWorkoutTime = computed(() => {
+//   if ((workoutStore.workouts as any[]).length === 0) return 0
+//   const total = (workoutStore.workouts as any[]).reduce((sum: number, workout: any) => sum + workout.duration, 0)
+//   return Math.round(total / (workoutStore.workouts as any[]).length)
+// })
 
 const filteredWorkouts = computed(() => {
   let workouts = (workoutStore.workouts as any[]).slice()
